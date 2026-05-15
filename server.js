@@ -8,7 +8,7 @@ const bodyParser= require("body-parser");
 app.use(bodyParser.urlencoded({extended:false}));
 app.set("view engine", "ejs");
 app.set("views", path.resolve(__dirname, "templates"));
-const portNumber = 4500;
+const portNumber = process.env.PORT || 7003;
 const databaseName=`CMSC335DB-FinalProject`;
 const collectionName=`searchedCities`;
 
@@ -26,30 +26,8 @@ const url=process.env.MONGO_CONNECTION_STRING;
 
 
 app.listen(portNumber);
-let message=`Web server started and running at http://localhost:${portNumber}/\n`;
-let prompt=`Stop to shutdown the server:`;
-console.log(message);
-//command line interpreter
-console.log(prompt);
-process.stdin.setEncoding('utf-8');
-process.stdin.on('readable',()=>{
-    
-    const dataInput=process.stdin.read();
-    if(dataInput!==null){
-        const command=dataInput.trim();
-        if(command === 'stop'){
-            process.stdout.write(`Shutting down the server`);
-            process.exit(0);
-        }else{
-            process.stdout.write(`Invalid Command: ${command}\n`);
-        }
 
-        console.log(prompt);
-        process.stdin.resume();
-    }
-    
 
-});
 
 //functions
 const apiKey = "abfaeb91c8aa4912b77cc4699a868e06";
