@@ -70,7 +70,7 @@ async function getweather(location) {
 
 
 
-            const response = await fetch(url);
+            const response = await fetch(city_url);
             if (!response.ok){
                 newCity.url="err";
                 await newCity.save();
