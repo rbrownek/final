@@ -5,7 +5,9 @@ Janae Brown-Ekweonu (rbrownek)
 Janae Brown-Ekweonu (rbrownek)
 ## App Description: 
 Allow users to view weather information for inputted city, which is then stored in DB
-## YouTube Video Link: https://youtu.be/dy36CdXAb3g 
+## YouTube Video Link: 
+Local Host Video Link: https://youtu.be/vmu3q7yV1fw
+Using Local Host to show functionality because api not working through render 
 ## APIs: 
 WeatherBit (https://www.weatherbit.io/)
 ## Contact Email:  
