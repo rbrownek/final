@@ -96,6 +96,7 @@ async function getweather(location) {
             app_temp: weather.app_temp
             };
         } catch (error) {
+            console.log(`fetch err ${error}`);
             throw error;
         }
 
@@ -104,6 +105,8 @@ async function getweather(location) {
 
 
     }catch(err){
+        console.log(`mongoose connect err ${err}`);
+
         throw err;
     }
 
@@ -146,6 +149,7 @@ app.post("/weather", (request,response)=>{
         variables={
             location:lo
         }
+        console.log("NO INFO");
         return response.render("err",variables);
     }else{
         variables=info;
@@ -157,6 +161,8 @@ app.post("/weather", (request,response)=>{
 
 
    }).catch(error=>{
+    console.log(`post err ${error}`);
+
     variables={
             location:lo
         }
