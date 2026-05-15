@@ -20,8 +20,7 @@ const locationSchema= mongoose.Schema({
 
         });
 const City= mongoose.model("City",locationSchema);
-
-const url=process.env.MONGO_CONNECTION_STRING;
+console.log("Mongo variable exists:", !!process.env.MONGO_CONNECTION_STRING);
 
 
 
@@ -30,37 +29,33 @@ app.listen(portNumber);
 
 
 //functions
-const apiKey = "abfaeb91c8aa4912b77cc4699a868e06";
+const apiKey = process.env.WEATHERBIT_API_KEY;
 let lo;
 
 async function getweather(location) {
     const city = location.city;
     const state = location.state ?? "Maryland";
   
-    let url = `https://api.weatherbit.io/v2.0/current?city=${city},${state}&key=${apiKey}&units=I`;
+    let city_url = `https://api.weatherbit.io/v2.0/current?city=${city},${state}&key=${apiKey}&units=I`;
     try{
         await mongoose.connect(process.env.MONGO_CONNECTION_STRING);
         //look for city and url in datbase first 
         
         let filter={location:lo};
         let newCity;
-        /*const newCity= new City({
-            location:lo,
-            url:url
-        });
-        await newCity.save();
+
         
-        */
+       
         let cities= await City.find(filter);
         if (cities.length>0){
-            url=cities[0].url
-            if(url === "err"){
+            city_url=cities[0].url
+            if(city_url === "err"){
                  throw new Error("Weather request failed");
             }
         }else{
              newCity= new City({
                 location:lo,
-                url:url
+                url:city_url
             });
             await newCity.save();
 
