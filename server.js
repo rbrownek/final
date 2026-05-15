@@ -23,99 +23,73 @@ const City= mongoose.model("City",locationSchema);
 console.log("Mongo variable exists:", !!process.env.MONGO_CONNECTION_STRING);
 
 
-
 app.listen(portNumber);
 
 
 
 //functions
 const apiKey = process.env.WEATHERBIT_API_KEY;
+console.log("Weather API key exists:", !!apiKey);
+
 let lo;
 
 async function getweather(location) {
     const city = location.city;
-    const state = location.state;
-  
-    let city_url = `https://api.weatherbit.io/v2.0/current?city=${city},${state}&key=${apiKey}&units=I`;
-    try{
+    const state = location.state ;
+    lo = `${city}, ${state}`;
+
+    let city_url = `https://api.weatherbit.io/v2.0/current?city=${encodeURIComponent(city)},${encodeURIComponent(state)}&key=${apiKey}&units=I`;
+
+    try {
         await mongoose.connect(process.env.MONGO_CONNECTION_STRING);
-        //look for city and url in datbase first 
-        
-        let filter={location:lo};
-        let newCity;
 
-        
-       
-        let cities= await City.find(filter);
-        if (cities.length>0){
-            city_url=cities[0].url
-            if(city_url === "err"){
-                 throw new Error("Weather request failed");
-            }
-        }else{
-             newCity= new City({
-                location:lo,
-                url:city_url
-            });
-            await newCity.save();
+        let cityDoc = await City.findOne({ location: lo });
 
+        if (cityDoc && cityDoc.url === "err") {
+            throw new Error("This city was already marked as invalid");
         }
 
-        //use api to get weather
-        
-
-        try {
-
-
-
-
-
-            const response = await fetch(city_url);
-            if (!response.ok){
-                newCity.url="err";
-                await newCity.save();
-                throw new Error("Weather request failed");
-
-            } 
-            const data = await response.json();
-            const weather = data.data[0];
-            const info={
+        if (!cityDoc) {
+            cityDoc = new City({
                 location: lo,
-            time: weather.ob_time,
-            temp: weather.temp,
-            description: weather.weather.description,
-            app_temp: weather.app_temp
-            }
+                url: city_url
+            });
 
+            await cityDoc.save();
+        }
 
-            return {
+        const response = await fetch(cityDoc.url);
+
+        if (!response.ok) {
+            cityDoc.url = "err";
+            await cityDoc.save();
+
+            throw new Error(`Weather request failed with status ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!data.data || data.data.length === 0) {
+            cityDoc.url = "err";
+            await cityDoc.save();
+
+            throw new Error("No weather data returned");
+        }
+
+        const weather = data.data[0];
+
+        return {
             location: lo,
             time: weather.ob_time,
             temp: weather.temp,
             description: weather.weather.description,
             app_temp: weather.app_temp
-            };
-        } catch (error) {
-            console.log(`fetch err ${error}`);
-            throw error;
-        }
+        };
 
-
-        
-
-
-    }catch(err){
-        console.log(`mongoose connect err ${err}`);
-
+    } catch (err) {
+        console.log(`getweather err ${err}`);
         throw err;
     }
-
-
-
-
-
-
-
 }
 
 
