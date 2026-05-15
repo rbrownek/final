@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%- location %></title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Asimovian&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+<body>
+    <section id="weather">
+        <h2>Weather for <%- location %></h2>
+        <div id="time">As of: <%- time %></div>
+        <div id="condition"> <%- description %> </div>
+
+        <div id="info">
+
+                <div id="temp">Temperature: <%- temp %></div>
+                <div id="feels">Feels Like: <%- app_temp %></div> 
+        </div>
+        <div class="btn"><a href="/">Search For A New City</a></div>
+
+
+    </section>
+    
+    
+
+</body>
+</html>
