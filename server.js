@@ -59,6 +59,9 @@ async function getweather(location) {
         }
 
         const response = await fetch(cityDoc.url);
+        if (response.status === 429) {
+    throw new Error("Weather API rate limit reached. Try again later.");
+}
 
         if (!response.ok) {
             cityDoc.url = "err";
