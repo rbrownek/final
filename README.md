@@ -7,7 +7,7 @@ Janae Brown-Ekweonu (rbrownek)
 Allow users to view weather information for inputted city, which is then stored in DB
 ## YouTube Video Link: 
 Local Host Video Link: https://youtu.be/vmu3q7yV1fw
-Using Local Host to show functionality because api not working through render I am getting 429 errors
+Using Local Host to show functionality because api not working through render I am getting 429 errors, local host video shows before addition of google font however current src folder includes google fonts
 ## APIs: 
 WeatherBit (https://www.weatherbit.io/)
 ## Contact Email:  
