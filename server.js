@@ -34,7 +34,7 @@ let lo;
 
 async function getweather(location) {
     const city = location.city;
-    const state = location.state ?? "Maryland";
+    const state = location.state;
   
     let city_url = `https://api.weatherbit.io/v2.0/current?city=${city},${state}&key=${apiKey}&units=I`;
     try{
